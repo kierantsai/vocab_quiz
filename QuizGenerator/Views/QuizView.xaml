@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="QuizGenerator.Views.QuizView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prism="clr-namespace:Microsoft.Practices.Prism.Interactivity.InteractionRequest;assembly=Microsoft.Practices.Prism.Interactivity"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:expi="http://schemas.microsoft.com/expression/2010/interactivity"  
+             xmlns:expei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:interactionRequest="clr-namespace:VocabQuiz.Infrastructure.InteractionRequest;assembly=VocabQuiz.Infrastructure"
+             xmlns:loc="clr-namespace:QuizGenerator.Localization"
+             xmlns:vw="clr-namespace:QuizGenerator.Views"
+             xmlns:uc="clr-namespace:VocabQuiz.UserControls.InteractionRequest;assembly=VocabQuiz.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding Path=GenerateQuizInteractionRequest}">
+            <interactionRequest:ModalWindowAction>
+                <interactionRequest:ModalWindowAction.ModalWindowFactory>
+                    <uc:ConfirmationDialogFactory/>
+                </interactionRequest:ModalWindowAction.ModalWindowFactory>
+                <interactionRequest:ModalWindowAction.ContentTemplate>
+                    <DataTemplate>
+                        <vw:QuizParameterView/>
+                    </DataTemplate>
+                </interactionRequest:ModalWindowAction.ContentTemplate>
+            </interactionRequest:ModalWindowAction>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <Style x:Key="buttonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style x:Key="toolBarButtonStyle" TargetType="Button" BasedOn="{StaticResource buttonStyle}">
+            <Setter Property="Height" Value="30"/>
+        </Style>
+    </UserControl.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Button Content="{x:Static loc:Resource.Generate}" Style="{StaticResource toolBarButtonStyle}"
+                    Command="{Binding GenerateQuizCommand}"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="{x:Static loc:Resource.Submit}" Style="{StaticResource buttonStyle}"/>
+        </StackPanel>
+        <ContentControl>
+            
+        </ContentControl>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="QuizGenerator.Views.QuizParameterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:QuizGenerator.Localization"
+             mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="320">
+    <UserControl.Resources>
+        <Style x:Key="ControlStyle" TargetType="Control">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource ControlStyle}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Label" BasedOn="{StaticResource ControlStyle}">
+            <Setter Property="HorizontalContentAlignment" Value="Right"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Content="{x:Static loc:Resource.NumberOfQuestions}"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=NumberOfQuestions, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="{x:Static loc:Resource.NumberOfChoices}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=NumberOfChoices, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+    </Grid>
+</UserControl>

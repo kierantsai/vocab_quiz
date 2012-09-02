@@ -1,0 +1,21 @@
+﻿<Window x:Class="VocabQuiz.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
+        Title="MainWindow" Height="480" Width="720" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TabControl cal:RegionManager.RegionName="MainRegion">
+            <TabControl.Resources>
+                <Style x:Name="tabControlStyle" TargetType="{x:Type TabItem}">
+                    <Setter Property="Header" Value="{Binding Content.DataContext.Header}"/>
+                </Style>
+            </TabControl.Resources>
+        </TabControl>
+    </Grid>
+</Window>

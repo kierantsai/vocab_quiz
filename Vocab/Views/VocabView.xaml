@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="Vocab.Views.VocabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:Vocab.Localization"
+             xmlns:vocab="clr-namespace:Vocab"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             mc:Ignorable="d" 
+             d:DesignHeight="480" d:DesignWidth="720">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="vocabularyListViewSource" Source="{Binding Path=Vocabulary.Words}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <Style x:Key="controlStyle" TargetType="Control">
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource controlStyle}"/>
+        <Style TargetType="TextBox" BasedOn="{StaticResource controlStyle}"/>
+        <CollectionViewSource x:Key="definitionsListViewSource" Source="{Binding Path=SelectedWord.Definitions}"/>
+        <Style x:Key="definitionElementStyle" TargetType="TextBlock">
+            <Setter Property="Text" Value="{Binding Path=Body}"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+        </Style>
+        <Style x:Key="definitionEditingElementStyle" TargetType="TextBox">
+            <Setter Property="Text" Value="{Binding Path=Body}"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Height" Value="Auto"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Row="0" Grid.Column="0" Name="wordTextBox"
+                 Text="{Binding Path=TextBoxWord, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.InputBindings>
+                <KeyBinding Command="{Binding Path=NewWordCommand}" Key="Enter"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <Grid Grid.Row="0" Grid.Column="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    Content="{x:Static loc:Resource.New}"
+                    Command="{Binding Path=NewWordCommand}"
+                    />
+            <Button Grid.Column="1"
+                    Content="{x:Static loc:Resource.Delete}"
+                    Command="{Binding Path=DeleteWordCommand}"
+                    />
+            <Button Grid.Column="2"
+                    Content="{x:Static loc:Resource.Save}"
+                    Command="{Binding Path=SaveVocabularyCommand}"/>
+            <Button Grid.Column="3"
+                    Content="{x:Static loc:Resource.Load}"
+                    Command="{Binding Path=LoadVocabularyCommand}"/>
+        </Grid>
+        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="vocabularyListView"
+                  ItemsSource="{Binding Source={StaticResource vocabularyListViewSource}}"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding Path=SelectedWord}"/>
+
+        <Button Grid.Row="0" Grid.Column="2"
+                Content="{x:Static loc:Resource.AddDefinition}"
+                Command="{Binding Path=AddDefinitionCommand}"
+                />
+        <Button Grid.Row="0" Grid.Column="3"
+                Content="{x:Static loc:Resource.RemoveDefinition}"
+                Command="{Binding Path=RemoveDefinitionCommand}"
+                />
+
+        <DataGrid Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"
+                      ItemsSource="{Binding Source={StaticResource definitionsListViewSource}}"
+                      SelectionMode="Single"
+                      SelectedItem="{Binding Path=SelectedDefinition}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      HeadersVisibility="None"
+                      RowHeaderWidth="0"
+                     >
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*"
+                                    ElementStyle="{StaticResource definitionElementStyle}"
+                                    EditingElementStyle="{StaticResource definitionEditingElementStyle}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
